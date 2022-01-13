@@ -43,12 +43,11 @@ def calculate_delta(h, p, alpha):
 
 
 def steps4to6(h, p, w, alpha):
+    # Update variables delta calculation. Step 4.
     delta = calculate_delta(h, p, alpha)
-    for i in range(len(h)):
-        for j in range(len(h[i])):
-            # Eq. 26 in the paper.
-            h[i][j] = min(max(h[i][j] + delta[i][j], 0), w[i][j])
-    # Eq. 27 in the paper.
+
+    # Harmonic and percussive part calculation. Eq. 26 and 27 in paper. Step 5.
+    h = np.minimum(np.maximum(h + delta, 0), w)
     p = w-h
     return h, p
 
@@ -114,7 +113,7 @@ def main():
     h_wav, p_wav = binary_to_waveform(h, p, stft, gamma, len(data), hop_length)
 
     # SNR calculation for evaluation of algorithm
-    snr = lb.power_to_db(sum(np.power(data, 2)), sum(np.power(data - p_wav, 2)))
+    snr = lb.power_to_db(np.sum(np.power(data, 2)), np.sum(np.power(data - p_wav - h_wav, 2)))
     print(f"SNR: {snr} dB")
 
     # Saving harmonic and percussive parts for further usage (and for fun)
