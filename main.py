@@ -26,15 +26,11 @@ def calculate_delta(h, p, alpha):
     h_next, h_prev = h.copy(), h.copy()
     p_up, p_down = p.copy(), p.copy()
 
-    for i in range(len(h)):
-        h_next[i] = np.roll(h_next[i], -1)
-        h_prev[i] = np.roll(h_prev[i], 1)
-        h_next[i][-1], h_prev[i][0] = 0, 0
+    h_next = np.roll(h_next, -1, axis=0)
+    h_prev = np.roll(h_prev, 1, axis=0)
 
-    p_up = np.roll(p_up, (-1)*len(p[0]))
-    p_down = np.roll(p_down, len(p[0]))
-
-    p_up[-1], p_down[0] = np.zeros(len(p[0])), np.zeros(len(p[0]))
+    p_up = np.roll(p_up, -1, axis=1)
+    p_down = np.roll(p_down, 1, axis=1)
 
     # Eq. 23 in the paper.
     delta = alpha * (h_prev - 2 * h + h_next) / 4 - (1 - alpha) * (p_down - 2 * p + p_up) / 4
