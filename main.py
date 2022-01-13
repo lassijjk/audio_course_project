@@ -4,7 +4,6 @@
 # Ono, N., Miyamoto, K., Le Roux, J., Kameoka, H., & Sagayama, S. (2008, August).
 # Separation of a monaural audio signal into harmonic/percussive components by complementary diffusion on spectrogram.
 # In 2008 16th European Signal Processing Conference (pp. 1-4). IEEE.
-# I found that alpha of 0.3 resulted in lowest SNR using the given police03short.wav file.
 
 import numpy as np
 import librosa as lb
