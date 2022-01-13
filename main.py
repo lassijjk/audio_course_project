@@ -26,11 +26,11 @@ def calculate_delta(h, p, alpha):
     h_next, h_prev = h.copy(), h.copy()
     p_up, p_down = p.copy(), p.copy()
 
-    h_next = np.roll(h_next, -1, axis=0)
-    h_prev = np.roll(h_prev, 1, axis=0)
+    h_next = np.roll(h_next, -1, axis=1)
+    h_prev = np.roll(h_prev, 1, axis=1)
 
-    p_up = np.roll(p_up, -1, axis=1)
-    p_down = np.roll(p_down, 1, axis=1)
+    p_up = np.roll(p_up, -1, axis=0)
+    p_down = np.roll(p_down, 1, axis=0)
 
     # Eq. 23 in the paper.
     delta = alpha * (h_prev - 2 * h + h_next) / 4 - (1 - alpha) * (p_down - 2 * p + p_up) / 4
@@ -48,10 +48,8 @@ def steps4to6(h, p, w, alpha):
 
 
 def binarize(h, p, w):
-    for i in range(len(h)):
-        for j in range(len(h[0])):
-            h[i][j] = 0 if h[i][j] < p[i][j] else w[i][j]
-            p[i][j] = w[i][j] - h[i][j]
+    h = np.where(np.less(h, p), 0, w)
+    p = np.where(np.greater_equal(h, p), 0, w)
     return h, p
 
 
