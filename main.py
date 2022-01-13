@@ -58,7 +58,6 @@ def binary_to_waveform(h, p, stft, gamma, data_length, hop_length):
     waveforms = []
     for value in args:
         exp = np.exp(np.angle(stft)*1j) * np.power(value, 1/(2*gamma))
-        print(np.sum(np.sum(exp, axis=1)))
         istft = lb.istft(exp, hop_length=hop_length, length=data_length)
         waveforms.append(istft)
     return waveforms
